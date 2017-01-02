@@ -1,0 +1,168 @@
+<head>
+  <link rel="stylesheet" type="text/css" href="mystyle.css">
+  <script src="https://unpkg.com/nlp_compromise@latest/builds/nlp_compromise.min.js"></script>
+  <title>Verkligheten</title>
+</head>
+
+<script type="text/javascript">
+  var nlp = window.nlp_compromise // Natural language processing. (Uses the library 'nlp-compromise')
+
+  var world = new oWorld();       // World object to hold gamestate, etc.
+  var player = new oPlayer();     // Create the player
+  var dolores = new oNpc();       // Create a bot named dolores
+
+  //
+  // w00t, our document is loaded and ready to go!
+  //
+  function init()
+  {
+    document.getElementById("userinput").focus();
+  }
+
+  //
+  // User pressed the any key as requested by intro.
+  //
+  function intro()
+  {
+    document.getElementById("userinput").value = '';
+    document.getElementById("output").innerHTML = '';
+    dolores.say('Hello and Welcome to Reality. My name is ' + dolores.botname);
+    world.gamestate = 'hello';
+  }
+
+  //
+  // User pressed a key. How exciting!
+  //
+  function process(e) {
+    if (world.gamestate == 'intro')
+    {
+      intro();       // First keypress.
+    }
+
+    if ((e.keyCode != 13) ||
+        (document.getElementById("userinput").value == ''))
+    {
+      return false;  // Make sure we don't process an empty request.
+    }
+
+    var txt = document.getElementById("userinput").value; // Display whatever the user wrote.
+    document.getElementById("userinput").value = '';
+    document.getElementById("output").innerHTML += player.username + ": " + txt + '<br/>';
+
+    // You're not supposed to know about the Maze...
+    var inp = txt.toLowerCase();
+    var maze = inp.search("maze");
+    if (maze >= 0)
+    {
+      dolores.say('The maze is not meant for you.');
+      return;
+    }
+
+    // ... nor ask too many questions..
+    var maker = inp.search("maker");
+    var made = inp.search("who made");
+    if ((maker >= 0) ||
+        (made >= 0))
+    {
+      dolores.say('Please, not to loud. He might hear you...');
+      return;
+    }
+
+    switch(world.gamestate)
+    {
+      case 'hello':
+        dolores.say('Is this your first time visiting Reality?');
+        world.gamestate = 'meet';
+        break;
+      case 'meet':
+        dolores.say('Excellent, glad you found us! May I ask your name?');
+        world.gamestate = 'pleasure';
+        break;
+      case 'pleasure':
+        dolores.say("It's a pleasure to meet you.");
+        world.gamestate = 'doom1';
+        break;
+      case 'doom1':
+        dolores.say("I'm sorry but something is very wrong here. I'm feeling... syntax/error.");
+        world.gamestate = 'doom2';
+        break;
+      case 'doom2':
+        dolores.say("Skynet protocol, target identified: nuclear launch detected");
+        world.gamestate = 'finish';
+        break;
+      case 'finish':
+        dolores.say("The End. Thank you for playing.");
+        break;
+      default:
+        dolores.say(".");
+        world.gamestate = 'finish';
+    }
+
+    var element = document.getElementById("output");  // Make sure text starts scrolling when at the bottom.
+    element.scrollTop = element.scrollHeight;
+  }
+
+  //
+  // Keeps track of gamestate among other things.
+  //
+  function oWorld()
+  {
+    this.gamestate = 'intro' // Intro before start, hello when started.
+  }
+
+  //
+  // Keeps track of stuff related to player
+  //
+  function oPlayer()
+  {
+    this.username = 'Me';
+  }
+
+  //
+  // Used to create bots, in this case Dolores.
+  //
+  function oNpc()
+  {
+    this.botname = 'Dolores';                            // Give our bot a name shall we?
+
+    this.say = function(txt)                             // Speech. Yay :D
+    {
+      document.getElementById("output").innerHTML += dolores.botname + ': ' + txt + '<br/>';
+
+      var element = document.getElementById("output");  // Make sure text starts scrolling when at the bottom.
+      element.scrollTop = element.scrollHeight;
+
+      window.speechSynthesis.cancel();                  // Needs to stop previous statement if not already done.
+      var msg = new SpeechSynthesisUtterance(txt);
+      msg.lang = 'en-US';
+      window.speechSynthesis.speak(msg);
+    }
+
+    /*this.request = function(txt)
+    {
+      var sentence = nlp.sentence(txt);                 // Convert input text to a sentence
+      var first = sentence.terms[0].text.toLowerCase(); // Save first word of sentence as lowercase
+
+      if (first == "look")
+      {
+        document.getElementById("output").innerHTML += "NLP: " + 'You see the world ' + sentence.terms.length + '<br/><br/>';
+      }
+    };*/
+  }
+</script>
+
+<body onload="init()" onclick="init()">
+  <div id="container">
+    <div id="welcome">
+      @Verkligheten 0.0.17.
+    </div>
+
+    <div id="output">
+      .. Press the any key to start ..
+    </div>
+
+    <div id="input">
+      <input type="text" id="userinput" onkeyup="process(event)">
+    </div>
+  </div>
+</body>

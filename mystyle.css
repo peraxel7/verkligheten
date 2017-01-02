@@ -1,0 +1,93 @@
+  body {
+    background-color: black;
+    color: lightgreen;
+    font-family: monospace, fixedsys, LucidaTerminal;
+    font-size: 12px;
+  }
+
+  ::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+  }
+  ::-webkit-scrollbar-button {
+    width: 0px;
+    height: 0px;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: lightgreen;
+    border: 0px none #ffffff;
+    border-radius: 0px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: lightgreen;
+  }
+  ::-webkit-scrollbar-thumb:active {
+    background: lightgreen;
+  }
+  ::-webkit-scrollbar-track {
+    background: black;
+    border: 0px none #ffffff;
+    border-radius: 0px;
+  }
+  ::-webkit-scrollbar-track:hover {
+    background: black;
+  }
+  ::-webkit-scrollbar-track:active {
+    background: black;
+  }
+  ::-webkit-scrollbar-corner {
+    background: transparent;
+  }
+
+  input {
+    background-color: black;
+    color: lightgreen;
+    border-style: none;
+    outline-style: none;
+  }
+
+  h1 {
+      color: maroon;
+      margin-left: 40px;
+  }
+
+  #container {
+    position: relative;
+    margin: auto;
+    border: 1px solid lightgreen;
+    padding: 10px;
+    width: 480px;
+    height: 320px;
+    transform: translate(0, 50%);
+  }
+
+  #welcome {
+    text-align: left;
+  }
+
+  #output {
+    position: relative;
+    top: 50px;
+    border: none;
+    height: 190px;
+    overflow-y: auto;
+    overflow: hidden;
+    text-align: left;
+  }
+
+  #input {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    font-family: monospace, fixedsys, LucidaTerminal;
+    font-size: 12px;
+    width: 480px;
+    border: none;
+  }
+
+  #userinput {
+    font-family: monospace, fixedsys, LucidaTerminal;
+    font-size: 12px;
+    width: 100%;
+    border: none;
+  }
